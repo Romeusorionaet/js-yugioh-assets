@@ -22,6 +22,9 @@ const state = {
   actions: {
     button: document.getElementById("next-duel"),
   },
+  container: {
+    cardBox: document.querySelector(".card-box_container"),
+  },
 };
 
 const pathImages = "./src/assets/icons/";
@@ -143,6 +146,11 @@ async function removeAllCardsImages() {
 
   imgElements = player1BOX.querySelectorAll("img");
   imgElements.forEach((img) => img.remove());
+
+  computerBOX.style.display = "none";
+  player1BOX.style.display = "none";
+
+  state.container.cardBox.style.justifyContent = "center";
 }
 
 async function drawSelectCard(index) {
@@ -170,6 +178,11 @@ async function resetDuel() {
   state.cardSprites.name.innerText = "";
   state.cardSprites.type.innerText = "";
 
+  state.playerSides.computerBOX.style.display = "flex";
+  state.playerSides.player1BOX.style.display = "flex";
+
+  state.container.cardBox.style.justifyContent = "space-between";
+
   init();
 }
 
@@ -181,14 +194,20 @@ async function playAudio(status) {
   } catch {}
 }
 
+async function playBackgroundMusic() {
+  try {
+    const bgm = document.getElementById("bgm");
+    await bgm.play();
+  } catch {}
+}
+
 async function init() {
   await showHiddenCardsFieldImages(false);
 
   drawCards(5, state.playerSides.player1);
   drawCards(5, state.playerSides.computer);
 
-  const bgm = document.getElementById("bgm");
-  bgm.play();
+  await playBackgroundMusic();
 }
 
 init();
